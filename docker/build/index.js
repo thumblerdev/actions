@@ -10,6 +10,7 @@ try {
   const context = parser.getInput('context');
   const dockerfile = parser.getInput('dockerfile');
 
+  /*
   const command = ```
     docker build \
       ${tags.map(tag => '-t ' + tag).join(' ')} \
@@ -19,7 +20,6 @@ try {
 
   console.log(command);
 
-  /*
   exec(command, (err, stdout, stderr) => {
     console.log(stdout);
     console.error(stderr);
