@@ -15,7 +15,9 @@ try {
       ${tags.map(tag => '-t ' + tag).join(' ')} \
       ${context} \
       -f ${dockerfile}
-  ```
+  ```;
+
+  console.log(command);
 
   exec(command, (err, stdout, stderr) => {
     console.log(stdout);
