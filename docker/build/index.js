@@ -15,13 +15,24 @@ async function buildImage(dockerfile, context, tags) {
       -f ${dockerfile}
   `;
 
-  return exec(command);
+  return new Promise((resolve, reject) => {
+    exec(command, (err, stdout, stderr) => {
+      console.log(stdout);
+      console.error(stderr);
+      err ? reject(err) : resolve(stdout);
+    })
+  });
 }
 
 async function exportImage(imageName, fileName) {
   const command = `docker save ${imageName} -o ${fileName}`;
-
-  return exec(command);
+  return new Promise((resolve, reject) => {
+    exec(command, (err, stdout, stderr) => {
+      console.log(stdout);
+      console.error(stderr);
+      err ? reject(err) : resolve(stdout);
+    })
+  });
 }
 
 async function main() {
@@ -35,7 +46,7 @@ async function main() {
 
     await buildImage(dockerfile, context, tags);
     await exportImage(imageName, imagePath);
-    const {stdout, stderr } = await exec('ls');
+    const { stdout, stderr } = await exec('ls');
     console.log(stdout, stderr);
     await artifact.uploadArtifact(imageName, imagePath, '.');
   } catch (error) {
