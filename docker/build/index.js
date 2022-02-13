@@ -19,6 +19,7 @@ try {
 
   console.log(command);
 
+  /*
   exec(command, (err, stdout, stderr) => {
     console.log(stdout);
     console.error(stderr);
@@ -26,6 +27,7 @@ try {
       core.setFailed(err);
     }
   })
+  */
 } catch (error) {
   core.setFailed(error.message);
 }
