@@ -46,7 +46,6 @@ async function main() {
     await buildImage(dockerfile, context, tags);
     await exportImage(imageName, imagePath);
     await new Promise(resolve => exec('ls', (err, stdout) => { console.log(stdout); resolve(); }));
-    console.log(stdout, stderr);
     await artifact.uploadArtifact(imageName, imagePath, '.');
   } catch (error) {
     core.setFailed(error.message);
