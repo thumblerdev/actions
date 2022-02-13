@@ -1,13 +1,18 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Docker Build'
+description: 'Build docker image'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  tags:
+    description: 'Docker image tags'
     required: true
-    default: 'World'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+    default: 'latest'
+  context:
+    description: 'Docker context'
+    required: true
+    default: '.'
+  dockerfile:
+    description: 'Path to Dockerfile'
+    required: true
+    default: 'Dockerfile'
 runs:
   using: 'node16'
   main: 'index.js'
