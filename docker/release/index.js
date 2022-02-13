@@ -53,18 +53,6 @@ async function main() {
       await tagImage(imageName, tag);
       await pushImage(tag);
     }
-
-    await new Promise(resolve => {
-      exec('docker images', (err, stdout, stderr) => {
-        console.log(stdout);
-        resolve();
-      })
-    })
-
-    /*
-    await exportImage(imageName, imagePath);
-    await artifact.uploadArtifact(imageName, [imagePath], '.');
-    */
   } catch (error) {
     core.setFailed(error.message);
   }
