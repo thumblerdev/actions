@@ -30,9 +30,11 @@ async function main() {
     const context = parser.getInput('context');
     const dockerfile = parser.getInput('dockerfile');
     const imageName = path.basename(tags[0]);
+    const imagePath = imageName + '.tgz';
 
     await buildImage(dockerfile, context, tags);
-    await exportImage(imageName, imageName + '.tgz');
+    await exportImage(imageName, imagePath);
+    await artifact.uploadArtifact(imageName, imagePath, '.');
   } catch (error) {
     core.setFailed(error.message);
   }
