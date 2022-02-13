@@ -37,9 +37,9 @@ async function loadImage(fileName) {
 
 async function main() {
   try {
-    const tags = parser.getInput('tags', { type: 'array' });
-    const imageName = path.basename(tags[0]);
+    const imageName = parser.getInput('name');
     const imagePath = imageName + '.tgz';
+    //const tags = parser.getInput('tags', { type: 'array' });
 
     await artifact.downloadArtifact(imageName);
     await loadImage(imagePath);

@@ -1,10 +1,9 @@
 name: 'Docker Build'
 description: 'Build docker image'
 inputs:
-  tags:
-    description: 'Docker image tags'
+  name:
+    description: 'Docker image name'
     required: true
-    default: 'latest'
   context:
     description: 'Docker context'
     required: true

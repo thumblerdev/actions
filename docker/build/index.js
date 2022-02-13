@@ -37,10 +37,9 @@ async function exportImage(imageName, fileName) {
 
 async function main() {
   try {
-    const tags = parser.getInput('tags', { type: 'array' });
     const context = parser.getInput('context');
     const dockerfile = parser.getInput('dockerfile');
-    const imageName = path.basename(tags[0]);
+    const imageName = parser.getInput('name');
     const imagePath = imageName + '.tgz';
 
     await buildImage(dockerfile, context, tags);
