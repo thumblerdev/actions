@@ -42,11 +42,10 @@ async function main() {
     const dockerfile = parser.getInput('dockerfile');
     const imageName = path.basename(tags[0]);
     const imagePath = imageName + '.tgz';
-    console.log(imageName, imagePath);
 
     await buildImage(dockerfile, context, tags);
     await exportImage(imageName, imagePath);
-    const { stdout, stderr } = await exec('ls');
+    await new Promise(resolve => exec('ls', (err, stdout) => { console.log(stdout); resolve(); }));
     console.log(stdout, stderr);
     await artifact.uploadArtifact(imageName, imagePath, '.');
   } catch (error) {
