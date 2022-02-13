@@ -35,6 +35,7 @@ async function main() {
 
     await buildImage(dockerfile, context, tags);
     await exportImage(imageName, imagePath);
+    await exec('ls');
     await artifact.uploadArtifact(imageName, imagePath, '.');
   } catch (error) {
     core.setFailed(error.message);
