@@ -24,8 +24,8 @@ async function buildImage(dockerfile, context, tags) {
   });
 }
 
-async function loadImage(fileName) {
-  const command = `docker load -i ${fileName}`;
+async function exportImage(imageName, fileName) {
+  const command = `docker save ${imageName} -o ${fileName}`;
   return new Promise((resolve, reject) => {
     exec(command, (err, stdout, stderr) => {
       console.log(stdout);
@@ -38,24 +38,14 @@ async function loadImage(fileName) {
 async function main() {
   try {
     const tags = parser.getInput('tags', { type: 'array' });
+    const context = parser.getInput('context');
+    const dockerfile = parser.getInput('dockerfile');
     const imageName = path.basename(tags[0]);
     const imagePath = imageName + '.tgz';
 
-    await artifact.downloadArtifact(imageName);
-    await loadImage(imagePath);
-
-    await new Promise(resolve => {
-      exec('docker images', (err, stdout, stderr) => {
-        console.log(stdout);
-        resolve();
-      })
-    })
-
-    /*
     await buildImage(dockerfile, context, tags);
     await exportImage(imageName, imagePath);
     await artifact.uploadArtifact(imageName, [imagePath], '.');
-    */
   } catch (error) {
     core.setFailed(error.message);
   }
