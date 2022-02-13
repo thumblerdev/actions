@@ -7,14 +7,8 @@ const parser = require('action-input-parser');
 const exec = require('child_process').exec;
 const path = require('path');
 
-async function buildImage(dockerfile, context, tags) {
-  const command = `
-    docker build \
-      ${tags.map(tag => '-t ' + tag).join(' ')} \
-      ${context} \
-      -f ${dockerfile}
-  `;
-
+async function loadImage(fileName) {
+  const command = `docker load -i ${fileName}`;
   return new Promise((resolve, reject) => {
     exec(command, (err, stdout, stderr) => {
       console.log(stdout);
@@ -24,8 +18,19 @@ async function buildImage(dockerfile, context, tags) {
   });
 }
 
-async function loadImage(fileName) {
-  const command = `docker load -i ${fileName}`;
+async function tagImage(imageName, tag) {
+  const command = `docker tag ${imageName} ${tag}`;
+  return new Promise((resolve, reject) => {
+    exec(command, (err, stdout, stderr) => {
+      console.log(stdout);
+      console.error(stderr);
+      err ? reject(err) : resolve(stdout);
+    })
+  });
+}
+
+async function pushImage(tag) {
+  const command = `docker push ${tag}`;
   return new Promise((resolve, reject) => {
     exec(command, (err, stdout, stderr) => {
       console.log(stdout);
@@ -39,10 +44,17 @@ async function main() {
   try {
     const imageName = parser.getInput('name');
     const imagePath = imageName + '.tgz';
-    //const tags = parser.getInput('tags', { type: 'array' });
+    const tags = parser.getInput('tags', { type: 'array' });
 
     await artifact.downloadArtifact(imageName);
     await loadImage(imagePath);
+
+    await buildImage(dockerfile, context, tags);
+
+    for (const tag of tags) {
+      await tagImage(imageName, tag);
+      await pushImage(tag);
+    }
 
     await new Promise(resolve => {
       exec('docker images', (err, stdout, stderr) => {
@@ -52,7 +64,6 @@ async function main() {
     })
 
     /*
-    await buildImage(dockerfile, context, tags);
     await exportImage(imageName, imagePath);
     await artifact.uploadArtifact(imageName, [imagePath], '.');
     */
