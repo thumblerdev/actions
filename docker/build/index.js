@@ -10,13 +10,12 @@ try {
   const context = parser.getInput('context');
   const dockerfile = parser.getInput('dockerfile');
 
-  /*
-  const command = ```
+  const command = `
     docker build \
       ${tags.map(tag => '-t ' + tag).join(' ')} \
       ${context} \
       -f ${dockerfile}
-  ```;
+  `;
 
   console.log(command);
 
@@ -27,7 +26,6 @@ try {
       core.setFailed(err);
     }
   })
-  */
 } catch (error) {
   core.setFailed(error.message);
 }
