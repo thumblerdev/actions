@@ -42,7 +42,7 @@ async function main() {
     const imageName = parser.getInput('name');
     const imagePath = imageName + '.tgz';
 
-    await buildImage(dockerfile, context, tags);
+    await buildImage(dockerfile, context, [imageName]);
     await exportImage(imageName, imagePath);
     await artifact.uploadArtifact(imageName, [imagePath], '.');
   } catch (error) {
