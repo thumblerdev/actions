@@ -49,8 +49,6 @@ async function main() {
     await artifact.downloadArtifact(imageName);
     await loadImage(imagePath);
 
-    await buildImage(dockerfile, context, tags);
-
     for (const tag of tags) {
       await tagImage(imageName, tag);
       await pushImage(tag);
