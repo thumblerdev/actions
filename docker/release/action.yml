@@ -1,0 +1,10 @@
+name: 'Docker Release'
+description: 'Release docker image'
+inputs:
+  tags:
+    description: 'Docker image tags'
+    required: true
+    default: 'latest'
+runs:
+  using: 'node16'
+  main: 'index.js'
